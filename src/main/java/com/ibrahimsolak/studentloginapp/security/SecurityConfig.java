@@ -28,7 +28,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
+                        .requestMatchers(HttpMethod.POST, SecurityConstants.STUDENT_REGISTER_PATH).permitAll()
+                        .requestMatchers(HttpMethod.POST, SecurityConstants.TEACHER_REGISTER_PATH).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
