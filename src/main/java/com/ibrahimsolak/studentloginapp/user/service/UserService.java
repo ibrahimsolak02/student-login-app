@@ -1,0 +1,11 @@
+package com.ibrahimsolak.studentloginapp.user.service;
+
+import  com.ibrahimsolak.studentloginapp.user.entity.User;
+
+public interface UserService {
+    User getUserById(Long id);
+
+    User getUserByUserName(String userName);
+
+    User saveUser(User user);
+}
