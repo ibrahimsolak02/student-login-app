@@ -7,5 +7,7 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    User saveUser(User user);
+    User saveUserAsStudent(User user);
+
+    User saveUserAsTeacher(User user);
 }
