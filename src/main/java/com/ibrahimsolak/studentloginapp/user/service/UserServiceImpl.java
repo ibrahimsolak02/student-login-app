@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserName(String userName) {
-        Optional<User> userOptional = userRepository.findByUsername(userName);
-        return unwrap(userOptional,userName);
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return unwrap(userOptional,username);
     }
 
     @Override
@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    static User unwrap(Optional<User> user, String userName) {
+    static User unwrap(Optional<User> user, String username) {
         if(user.isPresent()) {
             return user.get();
         } else {
-            throw new EntityNotFoundException(userName, User.class);
+            throw new EntityNotFoundException(username, User.class);
         }
     }
 }
