@@ -5,4 +5,6 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <include file="db/changelog/user/create-user-table.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/student/create-student-table.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

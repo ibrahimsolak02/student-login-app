@@ -1,5 +1,7 @@
 package com.ibrahimsolak.studentloginapp.user.entity;
 
+import com.ibrahimsolak.studentloginapp.role.Role;
+import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,7 +10,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +30,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @NonNull
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Student student;
 }

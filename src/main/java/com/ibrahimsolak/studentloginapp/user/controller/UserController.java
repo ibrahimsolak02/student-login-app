@@ -20,9 +20,15 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id).getUsername(), HttpStatus.OK);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
-        userService.saveUser(user);
+    @PostMapping("/register/student")
+    public ResponseEntity<User> saveUserAsStudent(@Valid @RequestBody User user) {
+        userService.saveUserAsStudent(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register/teacher")
+    public ResponseEntity<User> saveUserAsTeacher(@Valid @RequestBody User user) {
+        userService.saveUserAsTeacher(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

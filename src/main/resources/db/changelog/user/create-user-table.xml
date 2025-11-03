@@ -23,4 +23,12 @@
     <changeSet id="CHANGE-TABLE-NAME" author="ibrahimsolak02">
         <renameTable oldTableName="USERS" newTableName="users"/>
     </changeSet>
+
+    <changeSet id="ADD-ROLE-TO-USER" author="ibrahimsolak02">
+        <addColumn tableName="users">
+            <column name="role" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
