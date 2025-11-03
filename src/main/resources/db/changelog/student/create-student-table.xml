@@ -14,7 +14,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="userId" type="bigint">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"
                              foreignKeyName="fk_students_users"
                              referencedTableName="users"
