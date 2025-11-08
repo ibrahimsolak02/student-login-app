@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibrahimsolak.studentloginapp.role.Role;
 import com.ibrahimsolak.studentloginapp.security.SecurityConstants;
 import com.ibrahimsolak.studentloginapp.security.manager.CustomAuthenticationManager;
 import com.ibrahimsolak.studentloginapp.user.entity.User;
@@ -11,7 +12,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -45,8 +46,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+
+        List<Role> roles = authResult.getAuthorities().stream()
+                .map(grantedAuthority -> {
+                    String roleName = grantedAuthority.getAuthority().replace("ROLE_", "");
+                    return Role.valueOf(roleName);
+                })
+                .toList();
+
+        List<String> roleNames = roles.stream()
+                .map(Role::name)
+                .toList();
+
         String token = JWT.create()
                 .withSubject(authResult.getName())
+                .withClaim("roles", roles.isEmpty() ? null : roleNames)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
 
