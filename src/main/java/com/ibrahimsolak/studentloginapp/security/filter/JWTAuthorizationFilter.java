@@ -2,6 +2,7 @@ package com.ibrahimsolak.studentloginapp.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ibrahimsolak.studentloginapp.security.SecurityConstants;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,12 +31,19 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String token = authorizationHeader.replace(SecurityConstants.BEARER, "");
-        String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
                 .build()
-                .verify(token)
-                .getSubject();
+                .verify(token);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, List.of());
+        String user = decodedJWT.getSubject();
+
+        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
+
+        List<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }

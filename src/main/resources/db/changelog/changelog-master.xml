@@ -6,5 +6,7 @@
 
     <include file="db/changelog/user/create-user-table.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/student/create-student-table.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/course/create-course-table.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/courseenrollment/course-enrollments.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
