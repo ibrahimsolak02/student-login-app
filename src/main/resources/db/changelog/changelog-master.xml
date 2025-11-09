@@ -8,5 +8,6 @@
     <include file="db/changelog/student/create-student-table.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/course/create-course-table.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/courseenrollment/course-enrollments.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/grade/create-grade-table.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
