@@ -1,6 +1,7 @@
 package com.ibrahimsolak.studentloginapp.course.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ibrahimsolak.studentloginapp.grade.entity.Grade;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,5 +36,9 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id")
     )
     private Set<Student> students;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Grade> grades;
 
 }
