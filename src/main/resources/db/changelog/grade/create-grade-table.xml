@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="CREATE-GRADE-TABLE" author="ibrahimsolak02">
+        <createTable tableName="grade">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="score" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="student_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_grade_grade_student"
+                             referencedTableName="student"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="course_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_grade_course"
+                             referencedTableName="course"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
