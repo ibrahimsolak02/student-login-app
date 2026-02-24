@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUserAsStudent(User user) {
+    public void saveUserAsStudent(User user) {
 
         if(userRepository.existsByUsername(user.getUsername())){
             throw new EntityExistsException("Username already exists");
@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
         student.setUser(user);
         user.setStudent(student);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
-    public User saveUserAsTeacher(User user) {
+    public void saveUserAsTeacher(User user) {
         user.setRole(Role.TEACHER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     static User unwrap(Optional<User> user, Long id) {
