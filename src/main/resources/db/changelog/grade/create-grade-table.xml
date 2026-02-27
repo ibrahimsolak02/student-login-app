@@ -29,4 +29,14 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="ADD-TEACHER-ID-COLUMN" author="ibrahimsolak02">
+        <addColumn tableName="grade">
+            <column name="teacher_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_grade_grade_teacher"
+                             referencedTableName="teacher"
+                             referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
