@@ -2,6 +2,7 @@ package com.ibrahimsolak.studentloginapp.user.entity;
 
 import com.ibrahimsolak.studentloginapp.role.Role;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -37,4 +38,7 @@ public class User {
 
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     private Student student;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Teacher teacher;
 }

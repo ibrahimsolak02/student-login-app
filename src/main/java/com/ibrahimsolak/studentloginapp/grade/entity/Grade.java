@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.grade.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ibrahimsolak.studentloginapp.course.entity.Course;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import com.ibrahimsolak.studentloginapp.validation.Score;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,4 +33,9 @@ public class Grade {
     @ManyToOne(optional = false)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
+
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Teacher teacher;
 }

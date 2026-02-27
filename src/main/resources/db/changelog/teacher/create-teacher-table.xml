@@ -4,25 +4,22 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="CREATE-COURSE-TABLE" author="ibrahimsolak02">
-        <createTable tableName="course">
-            <column name="id" type="BIGINT" autoIncrement="true">
+    <changeSet id="CREATE-TEACHER-TABLE" author="ibrahimsolak02">
+        <createTable tableName="teacher">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            
-            <column name="name" type="VARCHAR(255)">
+
+            <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="ADD-TEACHER-ID-COLUMN" author="ibrahimsolak02">
-        <addColumn tableName="course">
-            <column name="teacher_id" type="bigint">
+
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"
-                             foreignKeyName="fk_course_course_teacher"
-                             referencedTableName="teacher"
+                             foreignKeyName="fk_teacher_user"
+                             referencedTableName="users"
                              referencedColumnNames="id"/>
             </column>
-        </addColumn>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

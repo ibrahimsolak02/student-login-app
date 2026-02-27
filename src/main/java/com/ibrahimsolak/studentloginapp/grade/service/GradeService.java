@@ -4,5 +4,5 @@ import com.ibrahimsolak.studentloginapp.grade.entity.Grade;
 
 public interface GradeService {
 
-    Grade submitGrade(Grade grade, Long courseId, Long studentId);
+    Grade submitGrade(Grade grade, Long courseId, Long studentId,Long teacherId);
 }

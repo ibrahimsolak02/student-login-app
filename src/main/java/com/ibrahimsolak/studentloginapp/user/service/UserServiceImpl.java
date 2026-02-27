@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.user.service;
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
 import com.ibrahimsolak.studentloginapp.role.Role;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import com.ibrahimsolak.studentloginapp.user.entity.User;
 import com.ibrahimsolak.studentloginapp.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUserAsStudent(User user) {
+    public void saveUserAsStudent(User user) {
 
         if(userRepository.existsByUsername(user.getUsername())){
             throw new EntityExistsException("Username already exists");
@@ -46,14 +47,23 @@ public class UserServiceImpl implements UserService {
         student.setUser(user);
         user.setStudent(student);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
-    public User saveUserAsTeacher(User user) {
+    public void saveUserAsTeacher(User user) {
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new EntityExistsException("Username already exists");
+        }
+
         user.setRole(Role.TEACHER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+
+        Teacher teacher = new Teacher();
+        teacher.setName(user.getUsername());
+        teacher.setUser(user);
+        user.setTeacher(teacher);
+        userRepository.save(user);
     }
 
     static User unwrap(Optional<User> user, Long id) {

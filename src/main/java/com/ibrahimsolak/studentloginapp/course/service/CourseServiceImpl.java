@@ -5,6 +5,8 @@ import com.ibrahimsolak.studentloginapp.course.repository.CourseRepository;
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import com.ibrahimsolak.studentloginapp.student.service.StudentService;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
+import com.ibrahimsolak.studentloginapp.teacher.service.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,12 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentService studentService;
+    private final TeacherService teacherService;
 
     @Override
-    public Course saveCourse(Course course) {
+    public Course saveCourse(Course course, Long teacherId) {
+        Teacher teacher = teacherService.getTeacherById(teacherId);
+        course.setTeacher(teacher);
         return courseRepository.save(course);
     }
 

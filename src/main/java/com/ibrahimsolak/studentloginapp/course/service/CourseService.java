@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CourseService {
 
-    Course saveCourse(Course course);
+    Course saveCourse(Course course, Long teacherId);
 
     void deleteCourse(Long id);
 
