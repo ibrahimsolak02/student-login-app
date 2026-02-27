@@ -28,15 +28,15 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/create")
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course){
-        courseService.saveCourse(course);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+    @PostMapping("/create/teacher/{teacherId}")
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, @PathVariable Long teacherId) {
+        courseService.saveCourse(course,teacherId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public ResponseEntity<Course> deleteCourse(@PathVariable Long id){
         courseService.deleteCourse(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
