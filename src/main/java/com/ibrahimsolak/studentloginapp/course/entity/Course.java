@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.course.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ibrahimsolak.studentloginapp.grade.entity.Grade;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -40,5 +41,10 @@ public class Course {
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Grade> grades;
+
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Teacher teacher;
 
 }
