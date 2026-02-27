@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.user.service;
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
 import com.ibrahimsolak.studentloginapp.role.Role;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
+import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import com.ibrahimsolak.studentloginapp.user.entity.User;
 import com.ibrahimsolak.studentloginapp.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -53,6 +54,11 @@ public class UserServiceImpl implements UserService {
     public void saveUserAsTeacher(User user) {
         user.setRole(Role.TEACHER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        Teacher teacher = new Teacher();
+        teacher.setName(user.getUsername());
+        teacher.setUser(user);
+        user.setTeacher(teacher);
         userRepository.save(user);
     }
 
