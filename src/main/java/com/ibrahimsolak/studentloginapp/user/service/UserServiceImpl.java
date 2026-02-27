@@ -52,6 +52,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUserAsTeacher(User user) {
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new EntityExistsException("Username already exists");
+        }
+
         user.setRole(Role.TEACHER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
