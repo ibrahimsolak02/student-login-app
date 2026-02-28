@@ -32,19 +32,14 @@ public class SecurityConfig {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
-                // 1. CORS Ayarını Aktif Et
                 .cors(Customizer.withDefaults())
-                // 2. CSRF'i Kapat (JWT kullandığın için güvenlidir)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // 3. Kayıt ve Login Yollarına Herkese İzin Ver
                         .requestMatchers(HttpMethod.POST, SecurityConstants.STUDENT_REGISTER_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, SecurityConstants.TEACHER_REGISTER_PATH).permitAll()
                         .requestMatchers("/authenticate").permitAll()
-                        // Diğer her şey için giriş istiyoruz
                         .anyRequest().authenticated()
                 )
-                // Filtre Zinciri (Sıralama Önemli!)
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
                 .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
@@ -56,15 +51,12 @@ public class SecurityConfig {
 
     }
 
-    // --- KRİTİK NOKTA: Angular'ın (4200) içeri girmesine izin veren yapılandırma ---
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Angular'ın çalıştığı adrese tam yetki veriyoruz
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
-        // JWT Token'ı Angular'ın okuyabilmesi için Authorization header'ını dışa açıyoruz
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
 
