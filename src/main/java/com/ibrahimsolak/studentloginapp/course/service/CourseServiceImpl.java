@@ -1,5 +1,6 @@
 package com.ibrahimsolak.studentloginapp.course.service;
 
+import com.ibrahimsolak.studentloginapp.course.dto.CourseDTO;
 import com.ibrahimsolak.studentloginapp.course.entity.Course;
 import com.ibrahimsolak.studentloginapp.course.repository.CourseRepository;
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -48,8 +50,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getAllCourses() {
-        return (List<Course>)courseRepository.findAll();
+    public List<CourseDTO> getAllCourses() {
+        List<Course> courses = (List<Course>) courseRepository.findAll();
+
+        return courses.stream()
+                .map(course -> {
+                    CourseDTO dto = new CourseDTO();
+                    dto.setName(course.getName());
+                    dto.setTeacherName(course.getTeacher().getName());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     Course unWrapCourse(Optional<Course> course, Long id) {

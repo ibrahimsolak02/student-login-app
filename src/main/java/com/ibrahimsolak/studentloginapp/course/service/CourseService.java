@@ -1,5 +1,6 @@
 package com.ibrahimsolak.studentloginapp.course.service;
 
+import com.ibrahimsolak.studentloginapp.course.dto.CourseDTO;
 import com.ibrahimsolak.studentloginapp.course.entity.Course;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface CourseService {
 
     Course getCourseById(Long id);
 
-    List<Course> getAllCourses();
+    List<CourseDTO> getAllCourses();
 }
