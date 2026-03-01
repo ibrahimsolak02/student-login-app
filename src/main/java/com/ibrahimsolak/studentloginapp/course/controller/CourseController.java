@@ -1,5 +1,6 @@
 package com.ibrahimsolak.studentloginapp.course.controller;
 
+import com.ibrahimsolak.studentloginapp.course.dto.CourseDTO;
 import com.ibrahimsolak.studentloginapp.course.entity.Course;
 import com.ibrahimsolak.studentloginapp.course.service.CourseService;
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ public class CourseController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
