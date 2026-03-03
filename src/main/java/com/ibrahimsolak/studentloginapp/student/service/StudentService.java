@@ -5,4 +5,6 @@ import com.ibrahimsolak.studentloginapp.student.entity.Student;
 public interface StudentService {
 
     Student getStudentById(Long id);
+
+    Student getStudentByUserId(Long userId);
 }

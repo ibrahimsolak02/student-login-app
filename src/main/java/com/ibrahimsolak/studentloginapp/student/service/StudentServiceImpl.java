@@ -1,7 +1,5 @@
 package com.ibrahimsolak.studentloginapp.student.service;
 
-import com.ibrahimsolak.studentloginapp.course.entity.Course;
-import com.ibrahimsolak.studentloginapp.course.repository.CourseRepository;
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import com.ibrahimsolak.studentloginapp.student.repository.StudentRepository;
@@ -20,6 +18,12 @@ public class StudentServiceImpl implements StudentService {
     public Student getStudentById(Long id) {
         Optional<Student> student = studentRepository.findById(id);
         return unWrapStudent(student,id);
+    }
+
+    @Override
+    public Student getStudentByUserId(Long userId) {
+        Optional<Student> student = studentRepository.findByUserId(userId);
+        return unWrapStudent(student, userId );
     }
 
     static Student unWrapStudent(Optional<Student> student, Long id) {
