@@ -8,7 +8,9 @@ import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import com.ibrahimsolak.studentloginapp.student.service.StudentService;
 import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
 import com.ibrahimsolak.studentloginapp.teacher.service.TeacherService;
+import com.ibrahimsolak.studentloginapp.user.entity.User;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,9 +38,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course addStudentToCourse(Long courseId, Long studentId) {
+    public Course addStudentToCourse(Long courseId) {
+        Object principal  = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentUserId;
+        if (principal instanceof User) currentUserId = ((User) principal).getId();
+        else throw new RuntimeException("Could not determine user ID");
+
         Course course = getCourseById(courseId);
-        Student student = studentService.getStudentById(studentId);
+        Student student = studentService.getStudentByUserId(currentUserId);
         course.getStudents().add(student);
         return courseRepository.save(course);
     }
@@ -56,6 +63,7 @@ public class CourseServiceImpl implements CourseService {
         return courses.stream()
                 .map(course -> {
                     CourseDTO dto = new CourseDTO();
+                    dto.setId(course.getId());
                     dto.setName(course.getName());
                     dto.setTeacherName(course.getTeacher().getName());
                     return dto;
