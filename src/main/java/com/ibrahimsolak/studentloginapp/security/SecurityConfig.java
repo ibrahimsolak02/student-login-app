@@ -4,6 +4,7 @@ import com.ibrahimsolak.studentloginapp.security.filter.AuthenticationFilter;
 import com.ibrahimsolak.studentloginapp.security.filter.ExceptionHandlerFilter;
 import com.ibrahimsolak.studentloginapp.security.filter.JWTAuthorizationFilter;
 import com.ibrahimsolak.studentloginapp.security.manager.CustomAuthenticationManager;
+import com.ibrahimsolak.studentloginapp.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,8 @@ public class SecurityConfig {
 
     private final CustomAuthenticationManager customAuthenticationManager;
 
+    private final UserRepository userRepository;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
@@ -42,7 +45,7 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
-                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(userRepository), AuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
