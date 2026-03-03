@@ -43,9 +43,9 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/{courseId}/student/{studentId}")
+    @PostMapping("/{courseId}")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public ResponseEntity<Course> enrollToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
-        return new ResponseEntity<>(courseService.addStudentToCourse(courseId,studentId), HttpStatus.OK);
+    public ResponseEntity<Course> enrollToCourse(@PathVariable Long courseId) {
+        return new ResponseEntity<>(courseService.addStudentToCourse(courseId), HttpStatus.OK);
     }
 }
