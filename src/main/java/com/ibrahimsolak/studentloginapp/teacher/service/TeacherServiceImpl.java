@@ -19,6 +19,12 @@ public class TeacherServiceImpl implements TeacherService {
         return unWrap(teacherOptional, id);
     }
 
+    @Override
+    public Teacher getTeacherByUserId(Long userId) {
+        Optional<Teacher> teacherOptional = teacherRepository.findByUserId(userId);
+        return unWrap(teacherOptional,userId);
+    }
+
     static Teacher unWrap(Optional<Teacher> teacher, Long id) {
         if(teacher.isPresent()) {
             return teacher.get();
