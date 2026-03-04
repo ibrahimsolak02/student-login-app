@@ -26,8 +26,13 @@ public class CourseServiceImpl implements CourseService {
     private final TeacherService teacherService;
 
     @Override
-    public Course saveCourse(Course course, Long teacherId) {
-        Teacher teacher = teacherService.getTeacherById(teacherId);
+    public Course saveCourse(Course course) {
+        Object principal  = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentUserId;
+        if (principal instanceof User) currentUserId = ((User) principal).getId();
+        else throw new RuntimeException("Could not determine user ID");
+
+        Teacher teacher = teacherService.getTeacherByUserId(currentUserId);
         course.setTeacher(teacher);
         return courseRepository.save(course);
     }
@@ -66,6 +71,7 @@ public class CourseServiceImpl implements CourseService {
                     dto.setId(course.getId());
                     dto.setName(course.getName());
                     dto.setTeacherName(course.getTeacher().getName());
+                    dto.setDescription(course.getDescription());
                     return dto;
                 })
                 .collect(Collectors.toList());

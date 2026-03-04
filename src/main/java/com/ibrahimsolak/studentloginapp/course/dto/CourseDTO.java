@@ -9,4 +9,5 @@ public class CourseDTO {
     private Long id;
     private String name;
     private String teacherName;
+    private String description;
 }

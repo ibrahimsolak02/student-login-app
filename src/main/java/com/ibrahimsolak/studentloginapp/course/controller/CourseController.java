@@ -30,9 +30,9 @@ public class CourseController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
-    @PostMapping("/create/teacher/{teacherId}")
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, @PathVariable Long teacherId) {
-        courseService.saveCourse(course,teacherId);
+    @PostMapping("/create")
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
+        courseService.saveCourse(course);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
