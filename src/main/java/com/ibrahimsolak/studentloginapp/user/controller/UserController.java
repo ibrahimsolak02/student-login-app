@@ -1,5 +1,7 @@
 package com.ibrahimsolak.studentloginapp.user.controller;
 
+import com.ibrahimsolak.studentloginapp.security.SecurityConstants;
+import com.ibrahimsolak.studentloginapp.user.entity.AuthResponse;
 import com.ibrahimsolak.studentloginapp.user.entity.User;
 import com.ibrahimsolak.studentloginapp.user.service.UserService;
 import jakarta.validation.Valid;
@@ -21,14 +23,22 @@ public class UserController {
     }
 
     @PostMapping("/register/student")
-    public ResponseEntity<User> saveUserAsStudent(@Valid @RequestBody User user) {
-        userService.saveUserAsStudent(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> saveUserAsStudent(@Valid @RequestBody User user) {
+        AuthResponse authResponse = userService.saveUserAsStudent(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + authResponse.token())
+                .body(authResponse);
     }
 
     @PostMapping("/register/teacher")
-    public ResponseEntity<User> saveUserAsTeacher(@Valid @RequestBody User user) {
-        userService.saveUserAsTeacher(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> saveUserAsTeacher(@Valid @RequestBody User user) {
+        AuthResponse authResponse = userService.saveUserAsTeacher(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + authResponse.token())
+                .body(authResponse);
     }
 }

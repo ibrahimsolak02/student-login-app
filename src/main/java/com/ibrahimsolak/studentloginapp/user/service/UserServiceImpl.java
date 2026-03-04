@@ -2,8 +2,10 @@ package com.ibrahimsolak.studentloginapp.user.service;
 
 import com.ibrahimsolak.studentloginapp.exception.EntityNotFoundException;
 import com.ibrahimsolak.studentloginapp.role.Role;
+import com.ibrahimsolak.studentloginapp.security.JwtService;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
 import com.ibrahimsolak.studentloginapp.teacher.entity.Teacher;
+import com.ibrahimsolak.studentloginapp.user.entity.AuthResponse;
 import com.ibrahimsolak.studentloginapp.user.entity.User;
 import com.ibrahimsolak.studentloginapp.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public User getUserById(Long id) {
@@ -33,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUserAsStudent(User user) {
+    public AuthResponse saveUserAsStudent(User user) {
 
         if(userRepository.existsByUsername(user.getUsername())){
             throw new EntityExistsException("Username already exists");
@@ -46,12 +50,14 @@ public class UserServiceImpl implements UserService {
         student.setName(user.getUsername());
         student.setUser(user);
         user.setStudent(student);
+        User savedUser = userRepository.save(user);
 
-        userRepository.save(user);
+        String token = jwtService.generateToken(savedUser.getUsername(), List.of(String.valueOf(Role.STUDENT)));
+        return new AuthResponse(savedUser,token);
     }
 
     @Override
-    public void saveUserAsTeacher(User user) {
+    public AuthResponse saveUserAsTeacher(User user) {
         if(userRepository.existsByUsername(user.getUsername())){
             throw new EntityExistsException("Username already exists");
         }
@@ -63,7 +69,10 @@ public class UserServiceImpl implements UserService {
         teacher.setName(user.getUsername());
         teacher.setUser(user);
         user.setTeacher(teacher);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        String token = jwtService.generateToken(savedUser.getUsername(), List.of(String.valueOf(Role.TEACHER)));
+        return new AuthResponse(savedUser,token);
     }
 
     static User unwrap(Optional<User> user, Long id) {

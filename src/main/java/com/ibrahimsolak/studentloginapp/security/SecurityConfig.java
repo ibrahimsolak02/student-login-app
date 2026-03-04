@@ -27,12 +27,12 @@ import java.util.List;
 public class SecurityConfig {
 
     private final CustomAuthenticationManager customAuthenticationManager;
-
+    private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager,jwtService);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
                 .cors(Customizer.withDefaults())
