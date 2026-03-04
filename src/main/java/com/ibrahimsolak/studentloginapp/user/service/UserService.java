@@ -1,5 +1,6 @@
 package com.ibrahimsolak.studentloginapp.user.service;
 
+import com.ibrahimsolak.studentloginapp.user.entity.AuthResponse;
 import  com.ibrahimsolak.studentloginapp.user.entity.User;
 
 public interface UserService {
@@ -7,7 +8,7 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    void saveUserAsStudent(User user);
+    AuthResponse saveUserAsStudent(User user);
 
-    void saveUserAsTeacher(User user);
+    AuthResponse saveUserAsTeacher(User user);
 }

@@ -29,6 +29,13 @@ public class Course {
     @Column
     private String name;
 
+    @NonNull
+    @Column(name = "capacity")
+    private Integer capacity;
+
+    @Column(name = "description")
+    private String description;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
