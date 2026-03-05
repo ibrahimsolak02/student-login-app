@@ -48,4 +48,10 @@ public class CourseController {
     public ResponseEntity<Course> enrollToCourse(@PathVariable Long courseId) {
         return new ResponseEntity<>(courseService.addStudentToCourse(courseId), HttpStatus.OK);
     }
+
+    @GetMapping("/my-courses")
+    public ResponseEntity<List<CourseDTO>> getEnrolledCourses() {
+        List<CourseDTO> myCourses = courseService.getEnrolledCourses();
+        return ResponseEntity.ok(myCourses);
+    }
 }

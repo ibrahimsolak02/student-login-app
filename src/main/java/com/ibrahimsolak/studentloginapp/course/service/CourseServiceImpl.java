@@ -77,6 +77,30 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<CourseDTO> getEnrolledCourses() {
+        Object principal  = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentUserId;
+        if (principal instanceof User) currentUserId = ((User) principal).getId();
+        else throw new RuntimeException("Could not determine user ID");
+
+        Student student = studentService.getStudentByUserId(currentUserId);
+        List<Course> courses = courseRepository.findByStudentsId(student.getId());
+
+        return courses
+                .stream()
+                    .map(
+                        course ->  {
+                            CourseDTO dto = new CourseDTO();
+                            dto.setId(course.getId());
+                            dto.setName(course.getName());
+                            dto.setTeacherName(course.getTeacher().getName());
+                            dto.setDescription(course.getDescription());
+                            return dto;
+                        }
+                ).collect(Collectors.toList());
+    }
+
     Course unWrapCourse(Optional<Course> course, Long id) {
         if (course.isPresent()) {
             return course.get();
