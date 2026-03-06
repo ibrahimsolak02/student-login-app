@@ -37,7 +37,12 @@ public class Course {
     private String description;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(
+            name = "course_enrollment",
+            joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id")
+    )
     private Set<Student> students;
 
     @JsonIgnore
