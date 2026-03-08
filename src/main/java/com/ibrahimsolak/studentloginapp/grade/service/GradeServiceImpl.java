@@ -5,6 +5,7 @@ import com.ibrahimsolak.studentloginapp.course.service.CourseService;
 import com.ibrahimsolak.studentloginapp.exception.StudentNotEnrolledException;
 import com.ibrahimsolak.studentloginapp.exception.TeacherNotAssignedToCourseException;
 import com.ibrahimsolak.studentloginapp.grade.dto.GradeDTO;
+import com.ibrahimsolak.studentloginapp.grade.dto.GradeViewDTO;
 import com.ibrahimsolak.studentloginapp.grade.entity.Grade;
 import com.ibrahimsolak.studentloginapp.grade.repository.GradeRepository;
 import com.ibrahimsolak.studentloginapp.student.entity.Student;
@@ -15,6 +16,8 @@ import com.ibrahimsolak.studentloginapp.user.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -52,6 +55,31 @@ public class GradeServiceImpl implements GradeService {
     public Grade getGradeByStudentIdAndCourse(Long studentId, Long courseId) {
         return gradeRepository.findFirstByStudentIdAndCourseIdOrderByIdDesc(studentId, courseId)
                 .orElse(null);
+    }
+
+    @Override
+    public List<GradeViewDTO> getMyGrades() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentUserId;
+
+        if (principal instanceof User user) {
+            currentUserId = user.getId();
+        } else {
+            throw new RuntimeException("Could not determine user ID");
+        }
+
+        Student student = studentService.getStudentByUserId(currentUserId);
+        List<Course> courseList = courseService.getCourseListByStudentId(student.getId());
+
+        return courseList.stream()
+                .map( course -> {
+                    GradeViewDTO gradeViewDTO = new GradeViewDTO();
+                    gradeViewDTO.setCourseId(course.getId());
+                    gradeViewDTO.setCourseName(course.getName());
+                    gradeViewDTO.setGrade(getGradeByStudentIdAndCourse(student.getId(),course.getId()).getScore());
+                    return gradeViewDTO;
+                })
+                .toList();
     }
 
     private Teacher getCurrentTeacher() {
