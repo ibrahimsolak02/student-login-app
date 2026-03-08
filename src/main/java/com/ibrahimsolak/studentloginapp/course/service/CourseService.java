@@ -21,4 +21,6 @@ public interface CourseService {
     List<CourseDTO> getEnrolledCourses();
 
     List<GradeDTO> getAllEnrollments();
+
+    List<Course> getCourseListByStudentId(Long studentId);
 }
