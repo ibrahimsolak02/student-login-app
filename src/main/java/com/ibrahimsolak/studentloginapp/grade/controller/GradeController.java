@@ -1,6 +1,6 @@
 package com.ibrahimsolak.studentloginapp.grade.controller;
 
-import com.ibrahimsolak.studentloginapp.grade.entity.Grade;
+import com.ibrahimsolak.studentloginapp.grade.dto.GradeDTO;
 import com.ibrahimsolak.studentloginapp.grade.service.GradeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -17,8 +19,9 @@ public class GradeController {
     private final GradeService gradeService;
 
     @PreAuthorize("hasAuthority('TEACHER')")
-    @PostMapping("/{courseId}/student/{studentId}/teacher/{teacherId}")
-    public ResponseEntity<Grade> submitGrade(@Valid @RequestBody Grade grade, @PathVariable Long courseId, @PathVariable Long studentId, @PathVariable Long teacherId) {
-        return new ResponseEntity<>(gradeService.submitGrade(grade, courseId, studentId, teacherId), HttpStatus.CREATED);
+    @PostMapping("/submit")
+    public ResponseEntity<GradeDTO> submitGrade(@Valid @RequestBody GradeDTO gradeDTO) {
+        gradeService.submitGrade(gradeDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

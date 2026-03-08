@@ -3,6 +3,7 @@ package com.ibrahimsolak.studentloginapp.course.controller;
 import com.ibrahimsolak.studentloginapp.course.dto.CourseDTO;
 import com.ibrahimsolak.studentloginapp.course.entity.Course;
 import com.ibrahimsolak.studentloginapp.course.service.CourseService;
+import com.ibrahimsolak.studentloginapp.grade.dto.GradeDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,5 +54,11 @@ public class CourseController {
     public ResponseEntity<List<CourseDTO>> getEnrolledCourses() {
         List<CourseDTO> myCourses = courseService.getEnrolledCourses();
         return ResponseEntity.ok(myCourses);
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @GetMapping("/enrollments/all-enrollments")
+    public ResponseEntity<List<GradeDTO>> getAllEnrollments() {
+        return new ResponseEntity<>(courseService.getAllEnrollments(), HttpStatus.OK);
     }
 }
