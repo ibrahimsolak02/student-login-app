@@ -97,7 +97,7 @@ public class CourseServiceImpl implements CourseService {
         else throw new RuntimeException("Could not determine user ID");
 
         Student student = studentService.getStudentByUserId(currentUserId);
-        List<Course> courses = courseRepository.findByStudentsId(student.getId());
+        List<Course> courses = getCourseListByStudentId(student.getId());
 
         return courses
                 .stream()
@@ -173,6 +173,11 @@ public class CourseServiceImpl implements CourseService {
                     return dto;
                 })
                 .toList();
+    }
+
+    @Override
+    public List<Course> getCourseListByStudentId(Long studentId) {
+        return courseRepository.findByStudentsId(studentId);
     }
 
     Course unWrapCourse(Optional<Course> course, Long id) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
 
-    List<Course> findByStudentsId(Long studentsId);
+    List<Course> findByStudentsId(Long studentId);
 
     List<Course> findByTeacherId(Long teacherId);
 
